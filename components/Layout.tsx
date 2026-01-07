@@ -5,9 +5,11 @@ interface LayoutProps {
   children: React.ReactNode;
   darkMode: boolean;
   toggleDarkMode: () => void;
+  activeTab: string;
+  onTabChange: (tab: string) => void;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, darkMode, toggleDarkMode }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, darkMode, toggleDarkMode, activeTab, onTabChange }) => {
   return (
     <div className={`min-h-screen flex flex-col ${darkMode ? 'dark bg-slate-950' : 'bg-[#fdfbf7]'}`} dir="rtl">
       <header className="sticky top-0 z-40 bg-emerald-900 dark:bg-emerald-950 text-white shadow-lg pt-[env(safe-area-inset-top)]">
@@ -42,7 +44,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, darkMode, toggleDarkMo
         </div>
       </header>
 
-      <main className="flex-1 w-full max-w-4xl mx-auto p-4 pb-12 dark:text-slate-100 text-right">
+      <main className="flex-1 w-full max-w-4xl mx-auto p-4 pb-24 dark:text-slate-100 text-right">
         {children}
       </main>
 
@@ -54,19 +56,44 @@ export const Layout: React.FC<LayoutProps> = ({ children, darkMode, toggleDarkMo
         </p>
       </footer>
 
-      <nav className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-t border-emerald-100 dark:border-slate-800 px-4 pt-2 pb-[calc(8px+env(safe-area-inset-bottom))] flex justify-around items-center md:hidden z-50 shadow-[0_-4px_15px_rgba(0,0,0,0.08)]">
-        <NavItem active icon={<HomeIcon />} label="ہوم" darkMode={darkMode} />
-        <NavItem icon={<HistoryIcon />} label="تاریخ" darkMode={darkMode} />
-        <NavItem icon={<StatsIcon />} label="ترقی" darkMode={darkMode} />
-        <NavItem icon={<SettingsIcon />} label="مزید" darkMode={darkMode} />
+      <nav className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-emerald-100 dark:border-slate-800 px-4 pt-2 pb-[calc(12px+env(safe-area-inset-bottom))] flex justify-around items-center z-50 shadow-[0_-4px_15px_rgba(0,0,0,0.08)]">
+        <NavItem 
+          active={activeTab === 'home'} 
+          onClick={() => onTabChange('home')} 
+          icon={<HomeIcon />} 
+          label="ہوم" 
+        />
+        <NavItem 
+          active={activeTab === 'history'} 
+          onClick={() => onTabChange('history')} 
+          icon={<HistoryIcon />} 
+          label="تاریخ" 
+        />
+        <NavItem 
+          active={activeTab === 'stats'} 
+          onClick={() => onTabChange('stats')} 
+          icon={<StatsIcon />} 
+          label="ترقی" 
+        />
+        <NavItem 
+          active={activeTab === 'settings'} 
+          onClick={() => onTabChange('settings')} 
+          icon={<SettingsIcon />} 
+          label="ترتیبات" 
+        />
       </nav>
     </div>
   );
 };
 
-const NavItem: React.FC<{ active?: boolean, icon: React.ReactNode, label: string, darkMode: boolean }> = ({ active, icon, label, darkMode }) => (
-  <button className={`flex flex-col items-center p-2 rounded-xl transition-all active:scale-90 ${active ? 'text-emerald-700 dark:text-emerald-400 font-semibold' : 'text-slate-400 dark:text-slate-500 hover:text-emerald-600'}`}>
-    {icon}
+const NavItem: React.FC<{ active?: boolean, onClick: () => void, icon: React.ReactNode, label: string }> = ({ active, onClick, icon, label }) => (
+  <button 
+    onClick={onClick}
+    className={`flex flex-col items-center p-2 min-w-[64px] rounded-xl transition-all active:scale-90 ${active ? 'text-emerald-700 dark:text-emerald-400 font-semibold scale-110' : 'text-slate-400 dark:text-slate-500 hover:text-emerald-600'}`}
+  >
+    <div className={`transition-transform duration-200 ${active ? 'scale-110' : ''}`}>
+      {icon}
+    </div>
     <span className="text-[10px] mt-1 font-medium">{label}</span>
   </button>
 );
@@ -91,6 +118,7 @@ const StatsIcon = () => (
 
 const SettingsIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
   </svg>
 );
