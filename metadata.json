@@ -1,0 +1,5 @@
+{
+  "name": "Al-Hafiz: Quran Tracker",
+  "description": "A sophisticated PWA to track your daily Quran reading progress across all 30 Juz, featuring granular progress marking and AI-powered reflections.",
+  "requestFramePermissions": []
+}
