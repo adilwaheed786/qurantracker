@@ -47,4 +47,4 @@
 *Created for the Ummah to make Quran tracking easy and beautiful.*
 
 ---
-© 2024 Al-Hafiz Quran Tracker. All Rights Reserved.
+© 2026 Al-Hafiz Quran Tracker. All Rights Reserved.
